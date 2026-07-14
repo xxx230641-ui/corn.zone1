@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>منطقة الذرة | Corn Zone</title>
+  
+  <!-- Favicon Set Dynamically -->
+  <link rel="icon" type="image/jpeg" href="src/assets/images/logo.jpg" />
+
+  <!-- Tailwind CSS via Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Tailwind Configuration to support Dark Mode & Customizations -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            blue: {
+              850: '#172554',
+              900: '#1e3a8a',
+              950: '#030712'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          animation: {
+            'spin-slow': 'spin 12s linear infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Core Styles and Keyframes -->
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Custom float slow keyframes */
+    @keyframes float-slow {
+      0%, 100% {
+        transform: translateY(0) translateX(0) rotate(var(--rot)) scale(1);
+      }
+      50% {
+        transform: translateY(-35px) translateX(15px) rotate(calc(var(--rot) + 180deg)) scale(1.12);
+      }
+    }
+    
+    .animate-float-slow {
+      animation: float-slow 10s infinite ease-in-out;
+    }
+
+    /* Active scroll transition speed */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Theme transition ease */
+    .theme-transition {
+      transition: background-color 300ms ease, border-color 300ms ease, text-color 300ms ease, fill 300ms ease;
+    }
+
+    /* Hide scrollbar for intro select ease */
+    .no-select {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen theme-transition bg-blue-950 text-gray-100 dark" id="app-container">
+
+  <!-- ========================================== -->
+  <!-- 1. INTRO WELCOME ANIMATION LAYER -->
+  <!-- ========================================== -->
+  <div id="intro-animation-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-blue-950 select-none transition-all duration-700 ease-in-out">
+    
+    <!-- Skip Button (Removed) -->
+
+    <!-- Sparkle Glow Background -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(251,192,45,0.15)_0%,transparent_60%)] animate-pulse-slow"></div>
+
+    <!-- Interactive Container holding explosion and logo -->
+    <div class="relative w-80 h-80 flex items-center justify-center">
+      
+      <!-- Container for dynamic JS-generated explosion kernels & sparks -->
+      <div id="explosion-container" class="absolute inset-0 flex items-center justify-center"></div>
+
+      <!-- Settle Logo Wrapper (Hidden initially, transition in via JS) -->
+      <div id="logo-wrapper" class="z-10 w-64 h-64 flex items-center justify-center transform scale-0 opacity-0 rotate-[-180deg] transition-all duration-1000 ease-[cubic-bezier(0.175,0.885,0.32,1.15)] relative">
+        <img src="src/assets/images/logo.jpg" alt="Corn Zone Logo" class="w-full h-full filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] select-none rounded-full object-cover" />
+        
+        <!-- Sweep Sheen Glow effect -->
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 translate-x-[-150%] transition-transform duration-[1200ms] ease-in-out" id="logo-sheen"></div>
+      </div>
+
+    </div>
+
+    <!-- Settle Text Box -->
+    <div id="logo-text" class="mt-8 text-center opacity-0 translate-y-4 transition-all duration-700 ease-out">
+      <h2 class="text-3xl font-extrabold text-yellow-400 font-sans tracking-wide" data-translate="appName">
+       منطقةالذرة
+      </h2>
+      <p class="text-xs font-semibold text-gray-300 mt-2 tracking-widest uppercase" data-translate="slogan">
+        التجربة الاستثنائية للذرة الحلوة
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- 2. STICKY FLOATING NAVBAR -->
+  <!-- ========================================== -->
+  <nav id="main-navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-transparent">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand / Logo Link -->
+        <a href="#" class="flex items-center gap-2 group" id="navbar-brand">
+          <img src="src/assets/images/logo.jpg" alt="Logo" class="w-12 h-12 rounded-full object-cover shadow-md group-hover:scale-105 transition-transform duration-300" />
+          <span class="text-xl font-extrabold tracking-tight font-sans text-yellow-400 group-hover:text-yellow-300 transition-colors duration-200" data-translate="appName">
+            منطقةالذرة
+          </span>
+        </a>
+
+        <!-- Desktop Navigation Items -->
+        <div class="hidden md:flex items-center space-x-1 space-x-reverse" id="desktop-nav-links">
+          <a href="#about" class="px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 text-gray-200 hover:text-yellow-400 hover:bg-blue-900/30" data-translate="aboutLink">نبذة عنا</a>
+          <a href="#menu" class="px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 text-gray-200 hover:text-yellow-400 hover:bg-blue-900/30" data-translate="menuLink">قائمة الطعام</a>
+          <a href="#branches" class="px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 text-gray-200 hover:text-yellow-400 hover:bg-blue-900/30" data-translate="branchesLink">فروعنا</a>
+          <a href="#reviews" class="px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 text-gray-200 hover:text-yellow-400 hover:bg-blue-900/30" data-translate="reviewsLink">آراء الزبائن</a>
+        </div>
+
+        <!-- Controls (Language, DarkMode, Hamburger) -->
+        <div class="flex items-center gap-2">
+          
+          <!-- Language Selector -->
+          <button onclick="toggleLanguage()" id="lang-toggle" class="p-2.5 rounded-full border border-blue-800/60 bg-blue-900/20 text-yellow-400 hover:bg-blue-900/40 active:scale-95 transition-all duration-300 flex items-center gap-1.5 text-xs font-bold cursor-pointer">
+            <i data-lucide="globe" class="w-4 h-4"></i>
+            <span id="lang-toggle-text">EN</span>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button onclick="toggleTheme()" id="theme-toggle" class="p-2.5 rounded-full border border-blue-800/60 bg-blue-900/20 text-yellow-400 hover:bg-blue-900/40 active:scale-95 transition-all duration-300 cursor-pointer">
+            <i data-lucide="sun" class="w-4 h-4" id="theme-icon"></i>
+          </button>
+
+          <!-- Mobile Drawer Trigger Button -->
+          <button onclick="toggleMobileMenu()" id="mobile-menu-toggle" class="md:hidden p-2.5 rounded-full border border-blue-800/60 bg-blue-900/20 text-gray-200 hover:bg-blue-900/40 active:scale-95 transition-all duration-300 cursor-pointer">
+            <i data-lucide="menu" class="w-4 h-4" id="mobile-menu-icon"></i>
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Drawer panel (Toggled via JS) -->
+    <div id="mobile-drawer" class="hidden md:hidden absolute top-20 left-0 right-0 border-b border-blue-900/60 bg-blue-950 text-gray-100 shadow-xl overflow-hidden transition-all duration-300 max-h-0">
+      <div class="px-4 pt-2 pb-6 space-y-2">
+        <a href="#about" onclick="closeMobileMenu()" class="block px-4 py-3 rounded-xl text-base font-bold hover:bg-blue-900/40 hover:text-yellow-400 transition-all duration-200" data-translate="aboutLink">نبذة عنا</a>
+        <a href="#menu" onclick="closeMobileMenu()" class="block px-4 py-3 rounded-xl text-base font-bold hover:bg-blue-900/40 hover:text-yellow-400 transition-all duration-200" data-translate="menuLink">قائمة الطعام</a>
+        <a href="#branches" onclick="closeMobileMenu()" class="block px-4 py-3 rounded-xl text-base font-bold hover:bg-blue-900/40 hover:text-yellow-400 transition-all duration-200" data-translate="branchesLink">فروعنا</a>
+        <a href="#reviews" onclick="closeMobileMenu()" class="block px-4 py-3 rounded-xl text-base font-bold hover:bg-blue-900/40 hover:text-yellow-400 transition-all duration-200" data-translate="reviewsLink">آراء الزبائن</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ========================================== -->
+  <!-- 3. HERO WELCOME SECTION -->
+  <!-- ========================================== -->
+  <div class="relative min-h-screen overflow-hidden flex items-center justify-center pt-20" id="home">
+    
+    <!-- JS-populated Ambient Drifting background kernels -->
+    <div id="ambient-kernels-container" class="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none opacity-40"></div>
+
+    <!-- Main Content Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-12 md:py-20">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+        
+        <!-- Text Column -->
+        <div class="md:col-span-7 space-y-6 text-center md:text-start order-2 md:order-1" id="hero-text-block">
+          
+          <!-- Tagline Slogan -->
+          <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-extrabold border bg-blue-950/80 border-blue-800 text-yellow-400 uppercase tracking-wider transition-all duration-300" id="hero-slogan-badge">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-yellow-500 animate-spin-slow"></i>
+            <span data-translate="slogan">التجربة الاستثنائية للذرة الحلوة</span>
+          </div>
+
+          <!-- Dynamic Main Title -->
+          <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight leading-none font-sans text-white" id="hero-heading">
+            مرحباً بكم في <span class="text-yellow-400 filter drop-shadow-[0_2px_10px_rgba(251,192,45,0.25)]">منطقة الذرة</span>!
+          </h1>
+
+          <!-- Rich Slogan Description -->
+          <p class="text-base sm:text-xl max-w-2xl leading-relaxed text-gray-300" id="hero-desc">
+            عالم من المذاق الفريد والذرة الذهبية الساخنة المعدة طازجة على طريقتنا الخاصة! نغمر ذرتنا الفاخرة بأشهى الصلصات الغنية لنضمن لك تجربة تذوق ممتعة ومقرمشة في كل فرع.
+          </p>
+
+          <!-- Call To Actions -->
+          <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 pt-4">
+            
+            <!-- Menu button -->
+            <a href="#menu" class="w-full sm:w-auto px-8 py-4 bg-yellow-400 hover:bg-yellow-300 active:scale-95 text-blue-950 font-bold text-lg rounded-2xl shadow-lg shadow-yellow-500/15 transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer">
+              <i data-lucide="eye" class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300"></i>
+              <span data-translate="exploreMenu">تصفح القائمة</span>
+            </a>
+
+            <!-- Find branches button -->
+            <a href="#branches" id="hero-branches-btn" class="w-full sm:w-auto px-8 py-4 font-bold text-lg rounded-2xl border bg-blue-900/30 border-blue-800 text-gray-200 hover:bg-blue-900/50 hover:text-white transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer">
+              <i data-lucide="map-pin" class="w-5 h-5 text-yellow-500"></i>
+              <span data-translate="viewBranches">مواقع الفروع</span>
+            </a>
+
+          </div>
+
+        </div>
+
+        <!-- Big Rotating Floating Graphic Card -->
+        <div class="md:col-span-5 flex justify-center order-1 md:order-2">
+          <div class="relative w-72 h-72 sm:w-96 sm:h-96">
+            
+            <!-- Rotating blur halo backdrop -->
+            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-yellow-400 to-amber-500 opacity-20 blur-3xl animate-pulse-slow"></div>
+            
+            <!-- Interactive Rotating Floating Logo -->
+            <div class="w-full h-full flex items-center justify-center relative cursor-pointer animate-[float-slow_9s_infinite_ease-in-out]">
+              
+              <!-- Ping expansion glow -->
+              <div class="absolute inset-0 bg-yellow-400/10 rounded-full blur-2xl animate-ping opacity-20 pointer-events-none"></div>
+              
+              <img src="src/assets/images/hero_bg.jpg" alt="Floating Logo" class="w-full h-full filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.4)] hover:scale-105 transition-transform duration-500 rounded-full object-cover" />
+            </div>
+
+            <!-- Freshness badge overlay -->
+            <div id="freshness-badge" class="absolute -bottom-2 -left-2 sm:-left-4 px-4 py-2 rounded-2xl shadow-lg border bg-blue-950/90 border-blue-800 text-yellow-400 flex items-center gap-2 backdrop-blur-md transition-all duration-300">
+              <span class="text-2xl">🌽</span>
+              <div class="text-start">
+                <p class="text-[9px] font-bold uppercase text-gray-400 tracking-wider" id="freshness-tag">التحضير</p>
+                <p class="text-xs font-extrabold" id="freshness-value">فوري وساخن</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bouncing Scroll Down Indicator -->
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-xs opacity-60">
+        <span class="font-semibold tracking-widest text-gray-400" id="scroll-indicator-text">
+          مرر للأسفل
+        </span>
+        <div class="animate-bounce">
+          <i data-lucide="arrow-down" class="w-4 h-4 text-yellow-400"></i>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- 4. ABOUT SECTION (Narrative & Features) -->
+  <!-- ========================================== -->
+  <section id="about" class="py-20 border-t bg-blue-950/30 border-blue-900/20 theme-transition">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        
+        <!-- Image Column -->
+        <div class="lg:col-span-5 relative group order-2 lg:order-1">
+          <div class="absolute inset-0 rounded-3xl bg-gradient-to-tr from-yellow-400 to-blue-600 opacity-20 blur-xl group-hover:opacity-30 transition-opacity duration-500"></div>
+          
+          <!-- Embedded Base64 Restaurant Interior image -->
+          <div class="relative overflow-hidden rounded-3xl border border-blue-900/10 shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
+            <img src="src/assets/images/regenerated_image_1783002870617.jpg" alt="Restaurant Interior" class="w-full h-full object-cover" />
+            
+            <!-- Vignette overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-blue-950/50 via-transparent to-transparent"></div>
+          </div>
+
+          <!-- Pure Sweet Corn Stat Badge overlay -->
+          <div id="about-stat-badge" class="absolute -top-4 -right-4 px-6 py-4 rounded-2xl border bg-blue-950 border-blue-800 text-yellow-400 shadow-lg flex flex-col items-center justify-center transition-all duration-300">
+            <span class="text-3xl font-extrabold text-yellow-400">100%</span>
+            <span class="text-[9px] uppercase tracking-wider font-bold text-gray-400" id="about-stat-label">طبيعي ومميز</span>
+          </div>
+        </div>
+
+        <!-- Narrative and Feature Cards Column -->
+        <div class="lg:col-span-7 space-y-8 order-1 lg:order-2 text-center lg:text-start">
+          
+          <div class="space-y-3">
+            <p class="text-sm font-extrabold tracking-widest text-yellow-400 uppercase" id="about-tagline">
+              رحلة النكهة الذهبية
+            </p>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white" data-translate="aboutTitle" id="about-title">
+              قصتنا الذهبية
+            </h2>
+            <div class="w-16 h-1 bg-yellow-400 mx-auto lg:mx-0 rounded-full"></div>
+          </div>
+
+          <p class="text-base sm:text-lg leading-relaxed text-gray-300" data-translate="aboutSubtitle" id="about-desc">
+            منذ انطلاقنا، نعمل في 'منطقة الذرة' على إعادة تعريف متعة تناول الذرة الحلوة. نختار بعناية أجود حبات الذرة الصفراء الناضجة تحت أشعة الشمس، ونقدمها طازجة، ساخنة، ومليئة بنكهات استثنائية تسعد الحواس في كل قمة.
+          </p>
+
+          <!-- 3 Feature Cards (Bullet points) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2" id="about-features-container">
+            <!-- Populated via JS -->
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 5. MENU SECTION -->
+  <!-- ========================================== -->
+  <section id="menu" class="py-24 bg-gray-50 dark:bg-blue-950 theme-transition relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-blue-950 dark:text-white" data-translate="menuTitle">
+          قائمة طعامنا الذهبية
+        </h2>
+        <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300" data-translate="menuSubtitle">
+          اكتشف تشكيلتنا الغنية من وجبات الذرة الفاخرة المطبوخة بكل إتقان.
+        </p>
+      </div>
+
+      <!-- Menu Items Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="menu-items-grid">
+        <!-- Populated via JS -->
+      </div>
+      
+      <!-- Note for Lghawees -->
+      <div class="mt-12 text-center">
+        <p class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-yellow-400/10 text-yellow-600 dark:text-yellow-400 font-bold text-sm sm:text-base border border-yellow-400/20">
+          <i data-lucide="info" class="w-5 h-5"></i>
+          <span data-translate="lghaweesNote">ملاحظة: يوجد لغاويص في فرع الأسطورة مول فقط</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 6. BRANCHES SECTION -->
+  <!-- ========================================== -->
+  <section id="branches" class="py-24 border-t border-gray-200 dark:border-blue-900/40 bg-white dark:bg-blue-950/50 theme-transition relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-blue-950 dark:text-white" data-translate="branchesTitle">
+          فروعنا
+        </h2>
+        <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300" data-translate="branchesSubtitle">
+          تفضل بزيارة أي من فروعنا لتستمتع بالذرة الذهبية على أصولها.
+        </p>
+      </div>
+
+      <!-- Branches Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="branches-grid">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 7. REVIEWS SECTION -->
+  <!-- ========================================== -->
+  <section id="reviews" class="py-24 bg-gray-50 dark:bg-blue-950 border-t border-gray-200 dark:border-blue-900/40 theme-transition">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-2 justify-center mb-4">
+        <i data-lucide="quote" class="w-8 h-8 text-yellow-400"></i>
+      </div>
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-blue-950 dark:text-white" data-translate="reviewsTitle">
+          ماذا يقول عشاقنا
+        </h2>
+        <p class="text-base sm:text-lg text-gray-600 dark:text-gray-300" data-translate="reviewsSubtitle">
+          لا تكتفِ بكلامنا، اقرأ تجارب زوارنا وعشاق نكهات منطقة الذرة المميزة.
+        </p>
+      </div>
+
+      <!-- Reviews Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="reviews-grid">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 8. FOOTER SECTION -->
+  <!-- ========================================== -->
+  <footer class="border-t bg-blue-950 border-blue-900/40 text-gray-400 theme-transition" id="app-footer">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+        
+        <!-- Logo & Mission block -->
+        <div class="md:col-span-6 space-y-4 text-center md:text-start flex flex-col items-center md:items-start">
+          <div class="flex items-center gap-2">
+            <img src="src/assets/images/logo.jpg" alt="Logo" class="w-14 h-14 rounded-full object-cover shadow-md" />
+            <span class="text-2xl font-extrabold tracking-tight text-yellow-400" data-translate="appName">
+              منطقة الذرة
+            </span>
+          </div>
+          <p class="text-sm leading-relaxed max-w-sm text-gray-300" data-translate="footerLogoDesc" id="footer-desc">
+            نقدم لكم أطيب حبات الذرة الذهبية المقرمشة بنكهات مبتكرة لا تُنسى. وجبتك الخفيفة المفضلة، بمفهوم جديد.
+          </p>
+        </div>
+
+        <!-- Quick navigation links -->
+        <div class="md:col-span-3 text-center md:text-start space-y-4">
+          <h4 class="text-yellow-400 font-extrabold text-sm uppercase tracking-wider" id="footer-nav-header">
+            وصول سريع
+          </h4>
+          <div class="flex flex-col space-y-2 text-sm" id="footer-nav-links">
+            <a href="#about" class="hover:text-yellow-400 hover:underline transition-colors" data-translate="aboutLink">نبذة عنا</a>
+            <a href="#menu" class="hover:text-yellow-400 hover:underline transition-colors" data-translate="menuLink">قائمة الطعام</a>
+            <a href="#branches" class="hover:text-yellow-400 hover:underline transition-colors" data-translate="branchesLink">فروعنا</a>
+            <a href="#reviews" class="hover:text-yellow-400 hover:underline transition-colors" data-translate="reviewsLink">آراء الزبائن</a>
+          </div>
+        </div>
+
+        <!-- Social Channels -->
+        <div class="md:col-span-3 text-center md:text-start space-y-4">
+          <h4 class="text-yellow-400 font-extrabold text-sm uppercase tracking-wider" data-translate="socialMedia" id="footer-social-header">
+            تابعنا على
+          </h4>
+          <p class="text-xs text-gray-400" id="footer-social-desc">
+            ابقَ على تواصل مع عروضنا اليومية وجديدنا!
+          </p>
+          <div class="flex justify-center md:justify-start gap-2.5 pt-2">
+            <a href="https://www.instagram.com/corn.zone1/" target="_blank" rel="noopener noreferrer" class="transition-transform hover:scale-110 w-10 h-10 rounded-full bg-blue-900/50 hover:bg-yellow-400 hover:text-blue-950 transition-all duration-300 flex items-center justify-center text-white" aria-label="Instagram">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" class="w-6 h-6">
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Copyright bottom -->
+      <div class="mt-12 pt-8 border-t border-blue-900/40 text-center text-xs text-gray-500 theme-transition" id="copyright-bar">
+        <p>
+          &copy; <span id="current-year">2026</span> <span data-translate="footerText">جميع الحقوق محفوظة. مطعم منطقة الذرة</span>. <span id="footer-love">صُنع بكل حب 🌽</span>
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ========================================== -->
+  <!-- 9. DATA AND CORE APPLICATION LOGIC -->
+  <!-- ========================================== -->
+  <script>
+    // 1. Data Store translations
+    const translations = {
+      appName: {
+        en: "Corn Zone",
+        ar: "منطقة الذرة"
+      },
+      slogan: {
+        en: "The Ultimate Sweet Corn Experience",
+        ar: "التجربة الاستثنائية للذرة الحلوة"
+      },
+      aboutLink: {
+        en: "About",
+        ar: "نبذة عنا"
+      },
+      menuLink: {
+        en: "Menu",
+        ar: "قائمة الطعام"
+      },
+      branchesLink: {
+        en: "Branches",
+        ar: "فروعنا"
+      },
+      reviewsLink: {
+        en: "Reviews",
+        ar: "آراء الزبائن"
+      },
+      aboutTitle: {
+        en: "Our Golden Story",
+        ar: "قصتنا الذهبية"
+      },
+      aboutSubtitle: {
+        en: "Since our launch, Corn Zone has been rewriting the rules of the sweet corn industry. We source only the finest, sun-ripened sweet corn, serving it fresh, hot, and packed with extraordinary flavors that bring joy to every bite.",
+        ar: "منذ انطلاقنا، نعمل في 'منطقة الذرة' على إعادة تعريف متعة تناول الذرة الحلوة. نختار بعناية أجود حبات الذرة الصفراء الناضجة تحت أشعة الشمس، ونقدمها طازجة، ساخنة، ومليئة بنكهات استثنائية تسعد الحواس في كل قمة."
+      },
+      aboutFeature1Title: {
+        en: "100% Premium Corn",
+        ar: "ذرة طبيعية 100٪"
+      },
+      aboutFeature1Desc: {
+        en: "Sourced directly from certified green farms.",
+        ar: "نستوردها مباشرة من مزارع خضراء معتمدة."
+      },
+      aboutFeature2Title: {
+        en: "Secret Flavors",
+        ar: "نكهات سرية مبتكرة"
+      },
+      aboutFeature2Desc: {
+        en: "Unique spice mixes and custom melted sauces.",
+        ar: "خلطات بهارات خاصة وصلصات غنية ومذابة."
+      },
+      aboutFeature3Title: {
+        en: "Served Hot",
+        ar: "تقدم ساخنة دائمًا"
+      },
+      aboutFeature3Desc: {
+        en: "Prepared instantly with premium standard hygiene.",
+        ar: "تُعد فوراً وبأعلى معايير الجودة والنظافة."
+      },
+      menuTitle: {
+        en: "Our Golden Menu",
+        ar: "قائمة طعامنا الذهبية"
+      },
+      menuSubtitle: {
+        en: "Explore our rich variations of premium sweet corn cooked to perfection.",
+        ar: "اكتشف تشكيلتنا الغنية من وجبات الذرة الفاخرة المطبوخة بكل إتقان."
+      },
+      branchesTitle: {
+        en: "Our Branches",
+        ar: "فروعنا"
+      },
+      branchesSubtitle: {
+        en: "Visit any of our convenient locations to experience the gold standard of sweet corn.",
+        ar: "تفضل بزيارة أي من فروعنا لتستمتع بالذرة الذهبية على أصولها."
+      },
+      reviewsTitle: {
+        en: "What Our Fans Say",
+        ar: "ماذا يقول عشاقنا"
+      },
+      reviewsSubtitle: {
+        en: "Don't take our word for it—see what our regular guests think of their Corn Zone visits.",
+        ar: "لا تكتفِ بكلامنا، اقرأ تجارب زوارنا وعشاق نكهات منطقة الذرة المميزة."
+      },
+      hoursLabel: {
+        en: "Opening Hours:",
+        ar: "أوقات العمل:"
+      },
+      phoneLabel: {
+        en: "Contact Number:",
+        ar: "رقم التواصل:"
+      },
+      skipAnimation: {
+        en: "Skip Intro",
+        ar: "تخطي الترحيب"
+      },
+      welcomeMessage: {
+        en: "Welcome to Corn Zone!",
+        ar: "مرحباً بكم في منطقة الذرة!"
+      },
+      exploreMenu: {
+        en: "Explore Menu",
+        ar: "تصفح القائمة"
+      },
+      viewBranches: {
+        en: "Find a Branch",
+        ar: "مواقع الفروع"
+      },
+      footerText: {
+        en: "All Rights Reserved. Corn Zone Restaurant",
+        ar: "جميع الحقوق محفوظة. مطعم منطقة الذرة"
+      },
+      footerLogoDesc: {
+        en: "Bringing you the crispest, sweetest golden corn with unforgettable gourmet twists. Your favorite snack, redefined.",
+        ar: "نقدم لكم أطيب حبات الذرة الذهبية المقرمشة بنكهات مبتكرة لا تُنسى. وجبتك الخفيفة المفضلة، بمفهوم جديد."
+      },
+      socialMedia: {
+        en: "Follow Us",
+        ar: "تابعنا على"
+      },
+      lghaweesNote: {
+        en: "Note: Lghawees is available at Al-Ustoura Mall branch only",
+        ar: "ملاحظة: يوجد لغاويص في فرع الأسطورة مول فقط"
+      },
+      currency: {
+        en: "YER",
+        ar: "ريال"
+      }
+    };
+
+    // 2. Menu items lists
+    const menuItems = [
+      {
+        id: "m1",
+        nameEn: "Small Corn Cup",
+        nameAr: "كوب ذرة صغير",
+        descriptionEn: "1- Steamed corn with butter and salt\n2- Corn with cheese and Cheetos",
+        descriptionAr: "1- ذرة مع زبدة وملح (سادة)\n2- ذرة مع جبن وشيتوس (الأكثر طلباً)",
+        price: "2000",
+        image: "src/assets/images/IMG_1.jpg",
+        badgeEn: "",
+        badgeAr: ""
+      },
+      {
+        id: "m2",
+        nameEn: "Medium Corn Plate",
+        nameAr: "طبق ذرة متوسط",
+        descriptionEn: "1- Steamed corn with butter and salt\n2- Corn with cheese and Cheetos",
+        descriptionAr: "1- ذرة مع زبدة وملح (سادة)\n2- ذرة مع جبن وشيتوس (الأكثر طلباً)",
+        price: "3500",
+        image: "src/assets/images/IMG_3.jpg",
+        badgeEn: "",
+        badgeAr: ""
+      },
+      {
+        id: "m3",
+        nameEn: "Transparent Corn Cup",
+        nameAr: "كوب ذرة شفاف",
+        descriptionEn: "1- Steamed corn with butter and salt\n2- Corn with cheese and Cheetos",
+        descriptionAr: "1- ذرة مع زبدة وملح (سادة)\n2- ذرة مع جبن وشيتوس (الأكثر طلباً)",
+        price: "2500",
+        image: "src/assets/images/IMG_2.jpg",
+        badgeEn: "",
+        badgeAr: ""
+      },
+      {
+        id: "m4",
+        nameEn: "Family Corn Plate",
+        nameAr: "طبق ذرة عائلي",
+        descriptionEn: "1- Steamed corn with butter and salt\n2- Corn with cheese and Cheetos",
+        descriptionAr: "1- ذرة مع زبدة وملح (سادة)\n2- ذرة مع جبن وشيتوس (الأكثر طلباً)",
+        price: "6000",
+        image: "src/assets/images/IMG_4.jpg",
+        badgeEn: "",
+        badgeAr: ""
+      }
+    ];
+
+    // 3. Branches lists
+    const branches = [
+      {
+        id: "b1",
+        nameEn: "Crater Branch",
+        nameAr: "فرع كريتر",
+        addressEn: "Crater Market, Aden",
+        addressAr: "سوق كريتر، المساحة أسفل درج عمارة الشربجي، عدن",
+        hoursEn: "4:30 PM - 10:00 PM",
+        hoursAr: "4:30 مساءً - 10:00 مساءً",
+        mapLink: "https://maps.google.com/?q=Corn+Zone+Crater+Aden"
+      },
+      {
+        id: "b2",
+        nameEn: "Al-Mansoura (Al-Bairaq Mall)",
+        nameAr: "فرع المنصورة (البيرق مول)",
+        addressEn: "Al-Mansoura, Al-Bairaq Mall, Aden",
+        addressAr: "مديرية المنصورة، داخل البيرق مول، شارع التسعين، عدن",
+        hoursEn: "4:30 PM - 10:00 PM",
+        hoursAr: "4:30 مساءً - 10:00 مساءً",
+        mapLink: "https://maps.google.com/?q=Corn+Zone+Bairaq+Mall+Aden"
+      },
+      {
+        id: "b3",
+        nameEn: "Al-Mansoura (Al-Ustoura Mall)",
+        nameAr: "فرع المنصورة (الأسطورة مول)",
+        addressEn: "Al-Mansoura, Al-Ustoura Mall, Aden",
+        addressAr: "مديرية المنصورة، داخل الأسطورة مول، شارع القصر، عدن",
+        hoursEn: "4:30 PM - 10:00 PM",
+        hoursAr: "4:30 مساءً - 10:00 مساءً",
+        mapLink: "https://maps.google.com/?q=Corn+Zone+Ustoura+Mall+Aden"
+      },
+      {
+        id: "b4",
+        nameEn: "Al-Mansoura (Red Sea Mall)",
+        nameAr: "فرع المنصورة (ردسي مول)",
+        addressEn: "Al-Mansoura, Red Sea Mall, Aden",
+        addressAr: "مديرية المنصورة، داخل ردسي مول، بلوك 10، عدن",
+        hoursEn: "4:30 PM - 10:00 PM",
+        hoursAr: "4:30 مساءً - 10:00 مساءً",
+        mapLink: "https://maps.google.com/?q=Corn+Zone+Red+Sea+Mall+Aden"
+      },
+      {
+        id: "b5",
+        nameEn: "Al-Mansoura (Al-Nakheel Mall)",
+        nameAr: "فرع المنصورة (النخيل مول)",
+        addressEn: "Al-Mansoura, Al-Nakheel Mall, Aden",
+        addressAr: "مديرية المنصورة، داخل النخيل مول، شارع التسعين، عدن",
+        hoursEn: "4:30 PM - 10:00 PM",
+        hoursAr: "4:30 مساءً - 10:00 مساءً",
+        mapLink: "https://maps.google.com/?q=Corn+Zone+Nakheel+Mall+Aden"
+      }
+    ];
+
+    // 4. Testimonials reviews list
+    const reviews = [
+      {
+        id: "r1",
+        nameEn: "Sarah Ahmed",
+        nameAr: "سارة أحمد",
+        rating: 5,
+        commentEn: "Absolutely the best sweet corn I've ever had! The Cheesy Lava Cup is mind-blowing. The atmosphere is wonderful and clean.",
+        commentAr: "بدون مبالغة أفضل ذرة حلوة تناولتها على الإطلاق! كوب لافا الجبنة لذيذ جداً وأنصح به بشدة. نظافة ممتازة وتعامل راقٍ.",
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150",
+        dateEn: "2 days ago",
+        dateAr: "قبل يومين"
+      },
+      {
+        id: "r2",
+        nameEn: "Khalid Mansoor",
+        nameAr: "خالد منصور",
+        rating: 5,
+        commentEn: "If you love sweet corn, Corn Zone is heaven. The Spicy Volcano Cup has a perfect kick. Bilingual menu and helpful staff.",
+        commentAr: "إذا كنت من محبي الذرة، فإن منطقة الذرة هو خيارك الأفضل. كوب بركان التوابل الحارة فيه لسعة حرارة مثالية وتتبيلة مدهشة.",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&h=150",
+        dateEn: "1 week ago",
+        dateAr: "قبل أسبوع"
+      },
+      {
+        id: "r3",
+        nameEn: "Lina Omar",
+        nameAr: "لينا عمر",
+        rating: 5,
+        commentEn: "The service is so fast! I love their visual identity (yellow & blue theme is so energetic). Garlic Parmesan Cup is my default choice now.",
+        commentAr: "الخدمة سريعة للغاية والذرة تقدم حارة وطازجة! أحببت هويتهم البصرية واللونين الأصفر والأزرق المبهجين. كوب الثوم والبارميزان خياري الدائم.",
+        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150&h=150",
+        dateEn: "2 weeks ago",
+        dateAr: "قبل أسبوعين"
+      }
+    ];
+
+    // ==========================================
+    // Reactive State Management
+    // ==========================================
+    const state = {
+      language: localStorage.getItem('cornzone_lang') || 'ar',
+      theme: localStorage.getItem('cornzone_theme') || 'dark',
+      mobileMenuOpen: false
+    };
+
+    // Helper translation fetch
+    function t(key) {
+      return translations[key] ? translations[key][state.language] : '';
+    }
+
+    // Set document direction attributes
+    function updateLayoutDirection() {
+      const isAr = state.language === 'ar';
+      document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+      document.documentElement.lang = state.language;
+      
+      // Update typography alignments
+      const heroTextBlock = document.getElementById('hero-text-block');
+      if (heroTextBlock) {
+        if (isAr) {
+          heroTextBlock.classList.remove('md:text-left');
+          heroTextBlock.classList.add('md:text-right');
+        } else {
+          heroTextBlock.classList.remove('md:text-right');
+          heroTextBlock.classList.add('md:text-left');
+        }
+      }
+    }
+
+    // Toggle active theme classes
+    function applyTheme() {
+      const isDark = state.theme === 'dark';
+      const appContainer = document.getElementById('app-container');
+      const navbar = document.getElementById('main-navbar');
+      const footer = document.getElementById('app-footer');
+      const skipIntroBtn = document.getElementById('skip-intro-btn');
+      
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        
+        appContainer.className = "min-h-screen theme-transition bg-blue-950 text-gray-100";
+        footer.className = "border-t bg-blue-950 border-blue-900/40 text-gray-400 theme-transition";
+        
+        // Dark theme-toggle icon
+        const themeIcon = document.getElementById('theme-icon');
+        if (themeIcon) {
+          themeIcon.setAttribute('data-lucide', 'sun');
+        }
+      } else {
+        document.documentElement.classList.remove('dark');
+        
+        appContainer.className = "min-h-screen theme-transition bg-white text-gray-800";
+        footer.className = "border-t bg-blue-950 border-blue-900 text-gray-200 theme-transition";
+        
+        // Light theme-toggle icon
+        const themeIcon = document.getElementById('theme-icon');
+        if (themeIcon) {
+          themeIcon.setAttribute('data-lucide', 'moon');
+        }
+      }
+      
+      // Save changes
+      localStorage.setItem('cornzone_theme', state.theme);
+      
+      // Update dynamic elements dependent on theme
+      updateNavbarScrolled();
+      renderAboutSection();
+      renderMenu();
+      renderBranches();
+      renderReviews();
+      
+      // Re-create icons
+      lucide.createIcons();
+    }
+
+    // Toggle logic functions
+    window.toggleLanguage = function() {
+      state.language = state.language === 'ar' ? 'en' : 'ar';
+      localStorage.setItem('cornzone_lang', state.language);
+      
+      // Refresh entire translated DOM
+      updateLayoutDirection();
+      translateStaticDOM();
+      
+      // Render components to display correct translations
+      renderAboutSection();
+      renderMenu();
+      renderBranches();
+      renderReviews();
+      
+      // Re-initialize Lucide
+      lucide.createIcons();
+    };
+
+    window.toggleTheme = function() {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      applyTheme();
+    };
+
+    window.toggleMobileMenu = function() {
+      state.mobileMenuOpen = !state.mobileMenuOpen;
+      const drawer = document.getElementById('mobile-drawer');
+      const menuIcon = document.getElementById('mobile-menu-icon');
+      
+      if (state.mobileMenuOpen) {
+        drawer.classList.remove('hidden');
+        setTimeout(() => {
+          drawer.style.maxHeight = '300px';
+        }, 10);
+        menuIcon.setAttribute('data-lucide', 'x');
+      } else {
+        drawer.style.maxHeight = '0px';
+        setTimeout(() => {
+          drawer.classList.add('hidden');
+        }, 300);
+        menuIcon.setAttribute('data-lucide', 'menu');
+      }
+      lucide.createIcons();
+    };
+
+    window.closeMobileMenu = function() {
+      if (state.mobileMenuOpen) {
+        window.toggleMobileMenu();
+      }
+    };
+
+    // Scroll sticky navbar activation
+    function updateNavbarScrolled() {
+      const navbar = document.getElementById('main-navbar');
+      const brandText = navbar.querySelector('#navbar-brand span');
+      const scrolled = window.scrollY > 20;
+      const isDark = state.theme === 'dark';
+      
+      if (scrolled) {
+        if (isDark) {
+          navbar.className = "fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-blue-950/95 border-b border-blue-900/40 backdrop-blur-md shadow-lg";
+        } else {
+          navbar.className = "fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-white/95 border-b border-gray-100 backdrop-blur-md shadow-md";
+        }
+      } else {
+        navbar.className = "fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-transparent";
+      }
+      
+      // Link color updates on scroll
+      const desktopLinks = document.querySelectorAll('#desktop-nav-links a');
+      desktopLinks.forEach(link => {
+        if (isDark) {
+          link.className = "px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 text-gray-200 hover:text-yellow-400 hover:bg-blue-900/30";
+        } else {
+          link.className = "px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 text-gray-700 hover:text-blue-900 hover:bg-yellow-100/60";
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateNavbarScrolled);
+
+    // ==========================================
+    // DOM Static Translation mapper
+    // ==========================================
+    function translateStaticDOM() {
+      const elements = document.querySelectorAll('[data-translate]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-translate');
+        if (translations[key]) {
+          el.textContent = translations[key][state.language];
+        }
+      });
+      
+      // Additional customized updates
+      const isAr = state.language === 'ar';
+      
+      // Lang button text
+      const langText = document.getElementById('lang-toggle-text');
+      if (langText) {
+        langText.textContent = isAr ? 'EN' : 'عربي';
+      }
+      
+      // Update hero elements
+      const heroSloganSpan = document.querySelector('#hero-slogan-badge span');
+      if (heroSloganSpan) heroSloganSpan.textContent = t('slogan');
+      
+      const heroHeading = document.getElementById('hero-heading');
+      if (heroHeading) {
+        heroHeading.innerHTML = isAr 
+          ? `مرحباً بكم في <span class="text-yellow-400 filter drop-shadow-[0_2px_10px_rgba(251,192,45,0.25)]">منطقة الذرة</span>!`
+          : `Welcome to <span class="text-yellow-400 filter drop-shadow-[0_2px_10px_rgba(251,192,45,0.25)]">Corn Zone</span>!`;
+      }
+      
+      const heroDesc = document.getElementById('hero-desc');
+      if (heroDesc) {
+        heroDesc.textContent = isAr
+          ? "عالم من المذاق الفريد والذرة الذهبية الساخنة المعدة طازجة على طريقتنا الخاصة! نغمر ذرتنا الفاخرة بأشهى الصلصات الغنية لنضمن لك تجربة تذوق ممتعة ومقرمشة في كل فرع."
+          : "A world of ultimate flavor and premium steaming-hot sweet corn prepared fresh! We smother our select golden corn in glorious sauces and spices to guarantee a crunchy, joyful bite in every visit.";
+      }
+      
+      const freshnessTag = document.getElementById('freshness-tag');
+      const freshnessValue = document.getElementById('freshness-value');
+      if (freshnessTag) freshnessTag.textContent = isAr ? 'التحضير' : 'Freshness';
+      if (freshnessValue) freshnessValue.textContent = isAr ? 'فوري وساخن' : 'Prepared Live';
+      
+      const scrollIndicatorText = document.getElementById('scroll-indicator-text');
+      if (scrollIndicatorText) scrollIndicatorText.textContent = isAr ? 'مرر للأسفل' : 'SCROLL DOWN';
+      
+      // About Section Static
+      const aboutTagline = document.getElementById('about-tagline');
+      if (aboutTagline) aboutTagline.textContent = isAr ? 'رحلة النكهة الذهبية' : 'GOLDEN QUALITY STANDARD';
+      
+      const aboutStatLabel = document.getElementById('about-stat-label');
+      if (aboutStatLabel) aboutStatLabel.textContent = isAr ? 'طبيعي ومميز' : 'Pure Sweet Corn';
+      
+      // Menu Header
+      const menuBadgeLabel = document.getElementById('menu-badge-label');
+      if (menuBadgeLabel) menuBadgeLabel.textContent = isAr ? 'طازج ولذيذ دائمًا' : 'Always Fresh & Delicious';
+      
+      // Branches Header
+      const branchesBadgeLabel = document.getElementById('branches-badge-label');
+      if (branchesBadgeLabel) branchesBadgeLabel.textContent = isAr ? 'تفضل بزيارتنا' : 'Dine with Us';
+      
+      // Reviews Header
+      const reviewsBadgeLabel = document.getElementById('reviews-badge-label');
+      if (reviewsBadgeLabel) reviewsBadgeLabel.textContent = isAr ? 'فخورون بثقتكم' : 'Loved by Millions';
+      
+      // Footer block Static
+      const footerSocialHeader = document.getElementById('footer-social-header');
+      if (footerSocialHeader) footerSocialHeader.textContent = t('socialMedia');
+      
+      const footerSocialDesc = document.getElementById('footer-social-desc');
+      if (footerSocialDesc) {
+        footerSocialDesc.textContent = isAr 
+          ? 'ابقَ على تواصل مع عروضنا اليومية وجديدنا!' 
+          : 'Stay tuned for our latest recipes, locations, and special snack additions.';
+      }
+      
+      const footerNavHeader = document.getElementById('footer-nav-header');
+      if (footerNavHeader) footerNavHeader.textContent = isAr ? 'وصول سريع' : 'Quick Navigation';
+      
+      const footerLove = document.getElementById('footer-love');
+      if (footerLove) footerLove.textContent = isAr ? 'صُنع بكل حب 🌽' : 'Made with love 🌽';
+      
+      const currentYearSpan = document.getElementById('current-year');
+      if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear().toString();
+    }
+
+
+    // ==========================================
+    // ABOUT FEATURE CARDS RENDERER
+    // ==========================================
+    function renderAboutSection() {
+      const container = document.getElementById('about-features-container');
+      if (!container) return;
+      
+      const isDark = state.theme === 'dark';
+      
+      const features = [
+        {
+          icon: 'leaf',
+          iconColor: 'text-emerald-500 animate-pulse',
+          title: t('aboutFeature1Title'),
+          desc: t('aboutFeature1Desc'),
+          bgColor: isDark ? 'bg-emerald-900/10 border-emerald-950/40' : 'bg-emerald-50 border-emerald-100'
+        },
+        {
+          icon: 'award',
+          iconColor: 'text-yellow-500',
+          title: t('aboutFeature2Title'),
+          desc: t('aboutFeature2Desc'),
+          bgColor: isDark ? 'bg-yellow-900/10 border-yellow-950/40' : 'bg-yellow-50 border-yellow-100'
+        },
+        {
+          icon: 'clock',
+          iconColor: 'text-sky-500',
+          title: t('aboutFeature3Title'),
+          desc: t('aboutFeature3Desc'),
+          bgColor: isDark ? 'bg-sky-900/10 border-sky-950/40' : 'bg-sky-50 border-sky-100'
+        }
+      ];
+      
+      container.innerHTML = features.map(feat => `
+        <div class="p-5 rounded-2xl border text-center transition-all duration-300 hover:scale-[1.03] hover:shadow-md flex flex-col items-center justify-center ${feat.bgColor}">
+          <div class="p-3 bg-white/10 dark:bg-blue-900/20 rounded-xl mb-3.5 shadow-sm border border-black/5 dark:border-white/5">
+            <i data-lucide="${feat.icon}" class="w-6 h-6 ${feat.iconColor}"></i>
+          </div>
+          <h3 class="text-base font-bold mb-1.5 ${isDark ? 'text-white' : 'text-blue-950'}">
+            ${feat.title}
+          </h3>
+          <p class="text-xs leading-normal ${isDark ? 'text-gray-400' : 'text-gray-500'}">
+            ${feat.desc}
+          </p>
+        </div>
+      `).join('');
+    }
+
+
+    // ==========================================
+    // MENU RENDERER
+    // ==========================================
+    function renderMenu() {
+      const grid = document.getElementById('menu-items-grid');
+      if (!grid) return;
+      
+      const isDark = state.theme === 'dark';
+      const isAr = state.language === 'ar';
+      
+      grid.innerHTML = menuItems.map(item => {
+        const name = isAr ? item.nameAr : item.nameEn;
+        const desc = isAr ? item.descriptionAr : item.descriptionEn;
+        const badge = isAr ? item.badgeAr : item.badgeEn;
+        
+        // Badge color themes matching exact React styles
+        let badgeStyle = '';
+        if (badge) {
+          const b = (item.badgeEn || '').toLowerCase();
+          if (b.includes('seller')) {
+            badgeStyle = 'bg-amber-500 text-white border-amber-400';
+          } else if (b.includes('hot') || b.includes('spicy')) {
+            badgeStyle = 'bg-red-600 text-white border-red-500';
+          } else if (b.includes('new')) {
+            badgeStyle = 'bg-emerald-500 text-white border-emerald-400';
+          } else {
+            badgeStyle = 'bg-blue-600 text-white border-blue-500';
+          }
+        }
+        
+        return `
+          <div class="group rounded-3xl border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-[1.03] ${isDark ? 'bg-blue-950/20 border-blue-900/40' : 'bg-white border-gray-100'}">
+            
+            <!-- Image Frame -->
+            <div class="relative h-60 w-full overflow-hidden bg-blue-950/20">
+              <img src="${item.image}" alt="${name}" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" />
+              
+              <!-- Dark gradient overlay on hover -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <!-- Heart Fav button visual only -->
+              <div class="absolute top-4 right-4 z-10">
+                <div class="w-9 h-9 rounded-full bg-white/90 dark:bg-blue-950/90 text-red-500 hover:scale-110 active:scale-95 transition-transform duration-200 flex items-center justify-center shadow-md cursor-pointer">
+                  <i data-lucide="heart" class="w-4 h-4 fill-current"></i>
+                </div>
+              </div>
+
+              <!-- Badge Overlay -->
+              ${badge ? `
+                <div class="absolute top-4 left-4 z-10">
+                  <span class="px-3.5 py-1 text-[10px] font-extrabold uppercase rounded-full shadow-md border ${badgeStyle}">
+                    ${badge}
+                  </span>
+                </div>
+              ` : ''}
+            </div>
+
+            <!-- Details Section -->
+            <div class="p-6 space-y-4">
+              
+              <!-- Title and Price tag -->
+              <div class="flex items-start justify-between gap-4">
+                <h3 class="text-xl font-extrabold leading-snug group-hover:text-yellow-500 transition-colors duration-300 ${isDark ? 'text-white' : 'text-blue-950'}">
+                  ${name}
+                </h3>
+                
+                <div class="flex items-baseline gap-1 bg-yellow-400 text-blue-950 px-3.5 py-1.5 rounded-2xl font-extrabold text-base shadow-sm shrink-0">
+                  <span>${item.price}</span>
+                  <span class="text-[10px] font-bold">${t('currency')}</span>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <p class="text-sm leading-relaxed whitespace-pre-line ${isDark ? 'text-gray-400' : 'text-gray-600'}">
+                ${desc}
+              </p>
+
+              <!-- Standard dynamic bullet chips -->
+              <div class="pt-3 border-t border-dashed border-gray-100 dark:border-blue-900/20 flex flex-wrap gap-1.5 text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase">
+                <span>✨ ${isAr ? 'فوري' : 'Live Cooked'}</span>
+                <span>•</span>
+                <span>🥛 ${isAr ? 'زبدة عضوية' : 'Organic Butter'}</span>
+                <span>•</span>
+                <span>🌶️ ${isAr ? 'بهارات خاصة' : 'Secret Spices'}</span>
+              </div>
+
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+
+    // ==========================================
+    // GPS MINIMAP COMPONENT FOR BRANCHES
+    // ==========================================
+    function generateMiniMapSVG(id) {
+      const isDark = state.theme === 'dark';
+      
+      // Determine unique maps geometries based on seeds
+      let streetLine = '';
+      let blocks = '';
+      let translationPin = '';
+      
+      if (id === 'b2') {
+        // Coastal curves
+        streetLine = `<path d="M 0,0 L 70,0 Q 110,60, 50,150 L 0,150 Z" fill="#E0F7FA" opacity="${isDark ? 0.15 : 0.6}" />`;
+        translationPin = 'translate(120, 55)';
+      } else if (id === 'b3') {
+        // Park layout
+        streetLine = `<rect x="20" y="20" width="80" height="60" rx="10" fill="#E8F5E9" opacity="${isDark ? 0.15 : 0.6}" />`;
+        translationPin = 'translate(200, 105)';
+      } else {
+        // Dry oasis sand layout
+        streetLine = `<rect x="180" y="10" width="100" height="50" rx="15" fill="#FFF9C4" opacity="${isDark ? 0.1 : 0.4}" />`;
+        translationPin = 'translate(150, 80)';
+      }
+
+      return `
+        <div class="relative h-44 w-full rounded-2xl overflow-hidden border border-gray-100 dark:border-blue-900/20 shadow-inner bg-slate-100 dark:bg-slate-900 no-select">
+          <svg class="w-full h-full" viewBox="0 0 300 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+            ${streetLine}
+            
+            <!-- Grid Layout of streets -->
+            <g stroke="${isDark ? '#1E293B' : '#E2E8F0'}" stroke-width="4" stroke-linecap="round">
+              <line x1="10" y1="30" x2="290" y2="30" />
+              <line x1="10" y1="80" x2="290" y2="80" stroke-width="6" />
+              <line x1="10" y1="120" x2="290" y2="120" />
+              <line x1="60" y1="10" x2="60" y2="140" />
+              <line x1="150" y1="10" x2="150" y2="140" stroke-width="6" />
+              <line x1="240" y1="10" x2="240" y2="140" />
+              <line x1="10" y1="140" x2="150" y2="80" />
+              <line x1="150" y1="80" x2="290" y2="10" />
+            </g>
+
+            <!-- Secondary Blocks -->
+            <g fill="${isDark ? '#334155' : '#CBD5E1'}" opacity="0.5">
+              <rect x="15" y="45" width="30" height="20" rx="4" />
+              <rect x="80" y="45" width="50" height="25" rx="4" />
+              <rect x="170" y="45" width="45" height="20" rx="4" fill="#FFE082" />
+              <rect x="250" y="90" width="35" height="25" rx="4" />
+              <rect x="85" y="95" width="45" height="15" rx="4" />
+            </g>
+
+            <!-- Animated GPS Pins -->
+            <g transform="${translationPin}">
+              <circle cx="0" cy="0" r="12" fill="#FBC02D" opacity="0.3">
+                <animate attributeName="r" values="6;16;6" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="0" cy="0" r="4" fill="#FBC02D" />
+              <path d="M 0,0 C -5,-5 -8,-12 -8,-18 C -8,-24 -4,-28 0,-28 C 4,-28 8,-24 8,-18 C 8,-12 5,-5 0,0 Z" fill="#D84315" stroke="#FFFFFF" stroke-width="1.5" />
+              <circle cx="0" cy="-18" r="2.5" fill="#FFFFFF" />
+            </g>
+          </svg>
+
+          <!-- Label Ribbon Overlay -->
+          <div class="absolute bottom-3 left-3 bg-blue-950/95 border border-yellow-400/30 text-[9px] font-bold text-yellow-400 py-1 px-2.5 rounded-full uppercase tracking-wider flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <span>Corn Zone GPS</span>
+          </div>
+        </div>
+      `;
+    }
+
+
+    // ==========================================
+    // BRANCHES RENDERER
+    // ==========================================
+    let copiedTimeoutId = null;
+    
+    window.handleCopyAddress = function(id, addressText) {
+      navigator.clipboard.writeText(addressText);
+      
+      const copyBtn = document.getElementById(`copy-btn-${id}`);
+      if (copyBtn) {
+        copyBtn.className = "px-3.5 py-3 rounded-xl border bg-emerald-500/10 border-emerald-500 text-emerald-500 transition-all duration-300 flex items-center justify-center cursor-pointer";
+        copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>';
+        lucide.createIcons();
+        
+        setTimeout(() => {
+          const isDark = state.theme === 'dark';
+          copyBtn.className = isDark
+            ? "px-3.5 py-3 rounded-xl border border-blue-800/60 bg-blue-900/20 text-gray-300 hover:bg-blue-900/40 hover:text-white transition-all duration-300 flex items-center justify-center cursor-pointer"
+            : "px-3.5 py-3 rounded-xl border border-gray-200 bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-blue-950 transition-all duration-300 flex items-center justify-center cursor-pointer";
+          copyBtn.innerHTML = '<i data-lucide="copy" class="w-4 h-4"></i>';
+          lucide.createIcons();
+        }, 2500);
+      }
+    };
+
+    function renderBranches() {
+      const grid = document.getElementById('branches-grid');
+      if (!grid) return;
+      
+      const isDark = state.theme === 'dark';
+      const isAr = state.language === 'ar';
+      
+      grid.innerHTML = branches.map(branch => {
+        const name = isAr ? branch.nameAr : branch.nameEn;
+        const address = isAr ? branch.addressAr : branch.addressEn;
+        const hours = isAr ? branch.hoursAr : branch.hoursEn;
+        const mapButtonText = isAr ? 'عرض على الخريطة' : 'Open in Maps';
+        const copyTitle = isAr ? 'نسخ العنوان' : 'Copy Address';
+        
+        return `
+          <div class="rounded-3xl border p-6 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-[1.02] ${isDark ? 'bg-blue-950/20 border-blue-900/40' : 'bg-white border-gray-100'}">
+            
+            <div class="space-y-4">
+              <!-- MiniMap SVG -->
+              ${generateMiniMapSVG(branch.id)}
+
+              <!-- Name -->
+              <h3 class="text-2xl font-extrabold tracking-tight leading-snug ${isDark ? 'text-white' : 'text-blue-950'}">
+                ${name}
+              </h3>
+
+              <!-- Branch Info List details -->
+              <div class="space-y-3.5 pt-2">
+                
+                <!-- Address line -->
+                <div class="flex gap-3 text-sm">
+                  <i data-lucide="map-pin" class="w-5 h-5 text-yellow-500 shrink-0"></i>
+                  <span class="${isDark ? 'text-gray-300' : 'text-gray-600'}">${address}</span>
+                </div>
+
+                <!-- Hours line -->
+                <div class="flex gap-3 text-sm">
+                  <i data-lucide="clock" class="w-5 h-5 text-yellow-500 shrink-0"></i>
+                  <div>
+                    <p class="text-[10px] font-bold uppercase text-gray-400 leading-none mb-1">${t('hoursLabel')}</p>
+                    <p class="font-semibold ${isDark ? 'text-gray-200' : 'text-gray-700'}">${hours}</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Action buttons bottom footer inside branch card -->
+            <div class="flex gap-2 pt-4 border-t border-dashed border-gray-100 dark:border-blue-900/20">
+              
+              <!-- Open Maps Link -->
+              <a href="${branch.mapLink}" target="_blank" rel="noreferrer" class="flex-1 px-4 py-3 bg-blue-900 hover:bg-blue-800 text-white font-bold text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-1.5 shadow-md shadow-blue-950/25">
+                <i data-lucide="navigation" class="w-3.5 h-3.5 text-yellow-400 rotate-45"></i>
+                <span>${mapButtonText}</span>
+              </a>
+
+              <!-- Copy Address Trigger -->
+              <button id="copy-btn-${branch.id}" onclick="handleCopyAddress('${branch.id}', \`${address}\`)" class="px-3.5 py-3 rounded-xl border transition-all duration-300 flex items-center justify-center cursor-pointer ${isDark ? 'bg-blue-900/20 border-blue-800/60 text-gray-300 hover:bg-blue-900/40 hover:text-white' : 'bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-200 hover:text-blue-950'}" title="${copyTitle}">
+                <i data-lucide="copy" class="w-4 h-4"></i>
+              </button>
+
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+
+    // ==========================================
+    // REVIEWS RENDERER
+    // ==========================================
+    function renderReviews() {
+      const grid = document.getElementById('reviews-grid');
+      if (!grid) return;
+      
+      const isDark = state.theme === 'dark';
+      const isAr = state.language === 'ar';
+      
+      grid.innerHTML = reviews.map(rev => {
+        const name = isAr ? rev.nameAr : rev.nameEn;
+        const comment = isAr ? rev.commentAr : rev.commentEn;
+        const date = isAr ? rev.dateAr : rev.dateEn;
+        
+        // Stars ratings loops
+        let starsHTML = '';
+        for (let i = 0; i < 5; i++) {
+          starsHTML += `
+            <i data-lucide="star" class="w-4.5 h-4.5 ${i < rev.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300 dark:text-gray-600'}"></i>
+          `;
+        }
+
+        return `
+          <div class="rounded-3xl border p-8 relative flex flex-col justify-between space-y-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-[1.03] ${isDark ? 'bg-blue-950/20 border-blue-900/40' : 'bg-white border-gray-100'}">
+            
+            <!-- Large decorative background quote overlay icon -->
+            <div class="absolute top-6 right-6 text-yellow-400/10 pointer-events-none">
+              <i data-lucide="quote" class="w-14 h-14 rotate-180 transform block"></i>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Rating -->
+              <div class="flex gap-1">
+                ${starsHTML}
+              </div>
+
+              <!-- Comment quotes -->
+              <p class="text-sm leading-relaxed relative z-10 italic ${isDark ? 'text-gray-200' : 'text-gray-600'}">
+                "${comment}"
+              </p>
+            </div>
+
+            <!-- Profile Info footer -->
+            <div class="flex items-center gap-3.5 pt-4 border-t border-gray-100 dark:border-blue-900/20 relative z-10">
+              
+              <!-- User Avatar with elegant gradient ring border -->
+              <div class="relative shrink-0">
+                <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-yellow-400 to-blue-600 p-[1.5px]"></div>
+                <img src="${rev.avatar}" alt="${name}" class="w-11 h-11 rounded-full object-cover p-[2px] bg-white dark:bg-blue-950" />
+              </div>
+
+              <!-- Name and date -->
+              <div>
+                <h4 class="text-sm font-bold ${isDark ? 'text-white' : 'text-blue-950'}">${name}</h4>
+                <p class="text-[10px] font-semibold text-gray-400 dark:text-gray-500">${date}</p>
+              </div>
+
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+
+    // ==========================================
+    // JS GENERATED EXPLOSION & SPARKS INTRO
+    // ==========================================
+    function initIntroExplosion() {
+      const container = document.getElementById('explosion-container');
+      if (!container) return;
+      
+      const kernelCount = 45;
+      for (let i = 0; i < kernelCount; i++) {
+        const angle = (i * (360 / kernelCount) + Math.random() * 15) * (Math.PI / 180);
+        const distance = 120 + Math.random() * 280;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        const scale = 0.4 + Math.random() * 0.8;
+        const rotate = Math.random() * 720 - 360;
+        const duration = 1.5 + Math.random() * 1.8;
+        const delay = Math.random() * 0.3;
+        
+        const kernel = document.createElement('div');
+        kernel.className = 'absolute w-5 h-7 rounded-full bg-gradient-to-b from-yellow-300 via-amber-400 to-yellow-600 shadow-md border border-yellow-200/30';
+        kernel.style.borderRadius = '50% 50% 50% 50% / 60% 60% 40% 40%';
+        kernel.style.transform = 'translate(0, 0) scale(0) rotate(0deg)';
+        kernel.style.opacity = '1';
+        
+        kernel.animate([
+          { transform: 'translate(0, 0) scale(0) rotate(0deg)', opacity: 1 },
+          { transform: `translate(${x}px, ${y}px) scale(${scale}) rotate(${rotate}deg)`, opacity: 0 }
+        ], {
+          duration: duration * 1000,
+          delay: delay * 1000,
+          easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)',
+          fill: 'forwards'
+        });
+        
+        container.appendChild(kernel);
+      }
+
+      // Popcorn expansion sparks
+      const sparkCount = 15;
+      for (let i = 0; i < sparkCount; i++) {
+        const angle = (i * (360 / sparkCount)) * (Math.PI / 180);
+        const distance = 180;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        const duration = 1.2;
+        const delay = 0.1 + Math.random() * 0.2;
+        
+        const spark = document.createElement('div');
+        spark.className = 'absolute w-6 h-6 bg-yellow-50 rounded-full shadow-lg';
+        spark.style.transform = 'translate(0, 0) scale(0)';
+        spark.style.opacity = '1';
+        
+        spark.animate([
+          { transform: 'translate(0, 0) scale(0)', opacity: 1 },
+          { transform: `translate(${x}px, ${y}px) scale(1.2)`, opacity: 0.8 },
+          { transform: `translate(${x}px, ${y}px) scale(0)`, opacity: 0 }
+        ], {
+          duration: duration * 1000,
+          delay: delay * 1000,
+          easing: 'ease-out',
+          fill: 'forwards'
+        });
+        
+        container.appendChild(spark);
+      }
+    }
+
+
+    // ==========================================
+    // AMBIENT DRIFTING KERNELS HERO
+    // ==========================================
+    function initAmbientKernels() {
+      const container = document.getElementById('ambient-kernels-container');
+      if (!container) return;
+      
+      const kernelCount = 15;
+      for (let i = 0; i < kernelCount; i++) {
+        const left = `${5 + Math.random() * 90}%`;
+        const top = `${10 + Math.random() * 80}%`;
+        const scale = 0.3 + Math.random() * 0.6;
+        const rotate = Math.random() * 360;
+        const duration = 8 + Math.random() * 12;
+        const delay = Math.random() * -10;
+        
+        const kernel = document.createElement('div');
+        kernel.className = 'absolute w-4 h-6 rounded-full bg-gradient-to-b from-yellow-300 to-amber-500 shadow-md pointer-events-none opacity-40';
+        kernel.style.left = left;
+        kernel.style.top = top;
+        kernel.style.borderRadius = '50% 50% 50% 50% / 60% 60% 40% 40%';
+        
+        // Animated using standard keyframes
+        kernel.style.setProperty('--rot', `${rotate}deg`);
+        kernel.style.animation = `float-slow ${duration}s infinite ease-in-out`;
+        kernel.style.animationDelay = `${delay}s`;
+        kernel.style.transform = `scale(${scale})`;
+        
+        container.appendChild(kernel);
+      }
+    }
+
+
+    // ==========================================
+    // INITIALIZATION & TIMINGS
+    // ==========================================
+    function startIntroSequence() {
+      initIntroExplosion();
+      
+      const introOverlay = document.getElementById('intro-animation-overlay');
+      const logoWrapper = document.getElementById('logo-wrapper');
+      const logoSheen = document.getElementById('logo-sheen');
+      const logoText = document.getElementById('logo-text');
+      
+      // 0.8s: logo entries scale and spin
+      setTimeout(() => {
+        if (logoWrapper) {
+          logoWrapper.classList.remove('scale-0', 'opacity-0');
+          logoWrapper.classList.add('scale-100', 'opacity-100', 'rotate-0');
+        }
+        if (logoText) {
+          logoText.classList.remove('opacity-0', 'translate-y-4');
+          logoText.classList.add('opacity-100', 'translate-y-0');
+        }
+      }, 800);
+
+      // 1.5s: logo sheen shine overlay sweep
+      setTimeout(() => {
+        if (logoSheen) {
+          logoSheen.style.transform = 'translateX(150%)';
+        }
+      }, 1500);
+      
+      // 4.5s: Fade overlay completely
+      const hideTimer = setTimeout(() => {
+        hideIntro();
+      }, 4500);
+      
+      window.skipIntro = () => {
+        clearTimeout(hideTimer);
+        hideIntro();
+      };
+      
+      function hideIntro() {
+        if (introOverlay) {
+          introOverlay.classList.add('opacity-0');
+          introOverlay.style.transform = 'translateY(-50px)';
+          setTimeout(() => {
+            introOverlay.remove();
+          }, 800);
+        }
+      }
+    }
+
+    // App entrance load
+    window.addEventListener('DOMContentLoaded', () => {
+      // Set default layouts
+      updateLayoutDirection();
+      translateStaticDOM();
+      applyTheme();
+      
+      // Start animations
+      startIntroSequence();
+      initAmbientKernels();
+    });
+
+  </script>
+</body>
+</html>
